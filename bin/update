@@ -1,0 +1,35 @@
+#!/bin/bash
+
+script_dir=$(cd $(dirname $0); pwd)
+blog_dir=$script_dir/..
+template=$blog_dir/templates/base.html
+page_dir=$blog_dir/pages
+post_dir=$blog_dir/posts
+postls=$page_dir/postls
+blind=$page_dir/blog_index.html
+www=$blog_dir/www
+static=$blog_dir/static
+
+[ -e $postls ] && rm $postls
+ls -d $post_dir/* -1 | while read d; do
+	cat $d/info | 
+	tr '\n' ' ' | 
+	sed 's/\ $/\n/' | 
+	sed "s/^/$( basename $d )\ /" >> $postls
+done
+
+cat $postls | sort -r | awk 'BEGIN{print "<h2>日記</h2><ul>"}{printf "<li>[%s]<a href=\"/posts/%s/content.html\">%s</a></li>\n",$3,$1,$2}END{print "</ul>"}' > $blind
+
+for page in $blog_dir/pages/*.html; do
+sed -n "/<!--content-->/!p; /<!--content-->/r $page" $template > \
+$www/pages/`basename $page`
+done
+find pages/* | grep -v -e .html$ -e postls | xargs -I% cp % $www/pages/
+
+for post in $blog_dir/posts/*/content.html; do
+mkdir -p $(dirname $www/posts/${post#*posts/})
+sed -n "/<!--content-->/!p; /<!--content-->/r $post" $template > \
+$www/posts/${post#*posts/}
+done
+
+rsync -a --delete $static/ $www/static
