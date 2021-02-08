@@ -1,2 +1,2 @@
-# kagero
-minimal cgi cms written in bash script.
+# shiranui
+minimal cms script written in bash.
