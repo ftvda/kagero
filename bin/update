@@ -5,7 +5,9 @@ blog_dir=$script_dir/..
 template=$blog_dir/templates/base.html
 page_dir=$blog_dir/pages
 post_dir=$blog_dir/posts
-postls=$page_dir/postls
+tmp=$blog_dir/tmp
+postls=$tmp/postls
+new_entries=$tmp/new_entries
 blind=$page_dir/blog_index.html
 www=$blog_dir/www
 static=$blog_dir/static
@@ -19,11 +21,15 @@ ls -d $post_dir/* -1 | while read d; do
 done
 
 cat $postls | sort -r | awk 'BEGIN{print "<h2>日記</h2><ul>"}{printf "<li>[%s]<a href=\"/posts/%s/content.html\">%s</a></li>\n",$3,$1,$2}END{print "</ul>"}' > $blind
+cat $postls | sort -r | head -n5 | awk '{printf "<li>[%s]<a href=\"/posts/%s/content.html\">%s</a></li>\n",$3,$1,$2}END{print "</ul>"}' > $new_entries
 
 for page in $blog_dir/pages/*.html; do
 sed -n "/<!--content-->/!p; /<!--content-->/r $page" $template > \
 $www/pages/`basename $page`
 done
+sed -i -n "/<!--entries-->/!p; /<!--entries-->/r $new_entries" $www/pages/index.html
+mv $www/pages/index.html $www/
+
 find pages/* | grep -v -e .html$ -e postls | xargs -I% cp % $www/pages/
 
 for post in $blog_dir/posts/*/content.html; do
