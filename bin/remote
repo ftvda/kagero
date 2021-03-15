@@ -1,0 +1,2 @@
+#!/bin/bash
+rsync -av --delete www/ google_cloud:/var/www/html/
