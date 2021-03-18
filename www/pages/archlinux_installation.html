@@ -321,11 +321,33 @@ $ mkdir ~/.cache/X11
 <h3>日本語入力</h3>
 <p>
 ibusとibus-skkをインストール
+<code><pre>
+$ sudo pacman -S ibus ibu-skk skk-jisyo
+</pre></code>
 </p>
 <p>
-ブラウザをインストール
+vim ~/.config/X11/xinitrc
+export DefaultIMModule=ibus
+export GTK_IM_MODULE=ibus
+export QT_IM_MODULE=ibus
+export XMODIFIERS="@im=ibus"
+
+ibus-daemon --xim &
 </p>
 
+<h3>ブラウザ(brave)をインストール</h3>
+<code><pre>
+$ cd ~/.local/src
+$ git clone https://aur.archlinux.org/brave-bin.git
+$ cd brave-bin
+$ makepkg -si
+</pre></code>
+
+<h3>音</h3>
+<code><pre>
+$ sudo pacman -S alsa-utilst pulseaudio
+$ pulseaudio --start
+</pre></code>
 
 
 <p>

@@ -317,16 +317,19 @@ export XMODIFIERS="@im=ibus"
 ibus-daemon --xim &
 </p>
 
-<p>
-ブラウザ(brave)をインストール
+<h3>ブラウザ(brave)をインストール</h3>
 <code><pre>
 $ cd ~/.local/src
 $ git clone https://aur.archlinux.org/brave-bin.git
 $ cd brave-bin
 $ makepkg -si
 </pre></code>
-</p>
 
+<h3>音</h3>
+<code><pre>
+$ sudo pacman -S alsa-utilst pulseaudio
+$ pulseaudio --start
+</pre></code>
 
 
 <p>
