@@ -1,0 +1,2 @@
+# kagero
+blog script and
