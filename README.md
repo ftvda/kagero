@@ -1,2 +1,2 @@
 # kagero
-blog script and
+static site generator and blog manuscripts
