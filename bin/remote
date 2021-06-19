@@ -1,3 +1,0 @@
-#!/bin/sh
-cd $(dirname $0)
-rsync -av --delete ../www/ google_cloud:/var/www/html/
